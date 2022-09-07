@@ -23,7 +23,7 @@ path {
 
 <!-- load the d3.js library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-hello world!!
+
 <script>
 
     // Set the dimensions of the canvas / graph
@@ -35,20 +35,20 @@ hello world!!
     var parseDate = d3.time.format("%d-%b-%y").parse;
 
     // Set the ranges
-    var x = d3.time.scale().range([1900, width]);
-    var y = d3.scale.linear().range([height, 15]);
+    var x = d3.time.scale().range([0, width]);
+    var y = d3.scale.linear().range([height, 0]);
 
     // Define the axes
     var xAxis = d3.svg.axis().scale(x)
-        .orient("bottom").ticks(20);
+        .orient("bottom").ticks(5);
 
     var yAxis = d3.svg.axis().scale(y)
         .orient("left").ticks(5);
 
     // Define the line
     var valueline = d3.svg.line()
-        .x(function(d) { return x(d.year); })
-        .y(function(d) { return y(d.meantemp); });
+        .x(function(d) { return x(d.date); })
+        .y(function(d) { return y(d.close); });
 
     // Adds the svg canvas
     var svg = d3.select("body")
@@ -60,15 +60,15 @@ hello world!!
             "translate(" + margin.left + "," + margin.top + ")");
 
     // Get the data
-    d3.csv("scatterdata.csv", function(error, data) {
+    d3.csv("data.csv", function(error, data) {
         data.forEach(function(d) {
-            d.year = parseDate(d.year);
-            d.meantemp = +d.meantemp;
+            d.date = parseDate(d.date);
+            d.close = +d.close;
         });
 
         // Scale the range of the data
-        x.domain(d3.extent(data, function(d) { return d.year; }));
-        y.domain([0, d3.max(data, function(d) { return d.meantemp; })]);
+        x.domain(d3.extent(data, function(d) { return d.date; }));
+        y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
         // Add the valueline path.
         svg.append("path")
@@ -80,8 +80,8 @@ hello world!!
             .data(data)
             .enter().append("circle")
             .attr("r", 3.5)
-            .attr("cx", function(d) { return x(d.year); })
-            .attr("cy", function(d) { return y(d.meantemp); });
+            .attr("cx", function(d) { return x(d.date); })
+            .attr("cy", function(d) { return y(d.close); });
 
         // Add the X Axis
         svg.append("g")
