@@ -59,7 +59,7 @@ path {
             "translate(" + margin.left + "," + margin.top + ")");
 
     // Get the data
-    d3.csv("g1.csv", function(error, data) {
+    d3.csv("datatest.csv", function(error, data) {
         data.forEach(function(d) {
             d.date = parseDate(d.date);
             d.close = +d.close;
