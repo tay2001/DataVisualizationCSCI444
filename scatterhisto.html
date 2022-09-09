@@ -40,7 +40,7 @@ Scatter assignment
             .attr("text-anchor", "end")
             .attr("x", width/2 + margin.left)
             .attr("y", height + margin.top + 20)
-            .text("Weekday Alcohol Consumption");
+            .text("Year");
 
         // add Y axis
         const y = d3.scaleLinear()
@@ -54,7 +54,7 @@ Scatter assignment
             .attr("transform", "rotate(-90)")
             .attr("y", -margin.left + 20)
             .attr("x", -margin.top - height/2 + 20)
-            .text("Health Status")
+            .text("MeanCumulativeMassBalance")
 
         // add dots at data points
         svg.append("g")
