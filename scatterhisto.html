@@ -30,7 +30,7 @@ Scatter assignment
 
         // add x axis
         const x = d3.scaleLinear()
-            .domain([0,6])
+            .domain([1956,2019])
             .range([0, width]);
         svg.append("g")
             .attr("transform", `translate(0, ${height})`)
@@ -44,7 +44,7 @@ Scatter assignment
 
         // add Y axis
         const y = d3.scaleLinear()
-            .domain([0,6])
+            .domain([0,-30.00])
             .range([height, 0]);
         svg.append("g")
             .call(d3.axisLeft(y));
