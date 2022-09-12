@@ -31,7 +31,6 @@ Scatter assignment
         // add x axis
         const x = d3.scaleLinear()
             .domain([1956,2019])
-            .tickArguments([d3.timeYears.every(1)])
             .range([0, width]);
 
         svg.append("g")
