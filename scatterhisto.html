@@ -22,16 +22,16 @@ Scatter assignment
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
-
+//zuk3
     d3.csv("g1.csv").then(function(data) {
 
         //const x_extent = d3.extent(data, function(d) { return d.GrLivArea; } );
         //const y_extent = d3.extent(data, function(d) { return d.SalePrice; } );
 
         // add x axis
-        const x = d3.scaleLinear()
+        const x = d3.scaleTime()
             .domain([1956,2019])
-            .ticks(d3.timeYear.every(1))
+            .ticks(1)
             .range([0, width]);
 
         svg.append("g")
