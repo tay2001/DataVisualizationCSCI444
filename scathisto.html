@@ -7,7 +7,7 @@
   <title>Reference Glacier Visualization</title>
   <style>
     body {
-      margin: 0px;
+      margin: 0;
     }
     .domain {
       display: none;
@@ -67,14 +67,12 @@
 
   const xAxis = d3.axisBottom()
           .scale(xScale)
-          .tickPadding(15)
-          .ticks(4)
+          .ticks(63)
           .tickSize(-innerHeight);
 
   const yAxis = d3.axisLeft()
           .scale(yScale)
-          .ticks(5)
-          .tickPadding(15)
+          .ticks(30)
           .tickSize(-innerWidth);
 
   const row = d => {
@@ -95,11 +93,11 @@
     });
     xScale
             .domain(d3.extent(data, xValue))
-            .range([0, innerWidth])
+            .range([1956, 2019])
             .nice();
 
     yScale
-            .domain([0,100])
+            .domain([0,30])
             .range([innerHeight, 0])
             .nice();
 
