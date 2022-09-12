@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <title>Reference Glacier Visualization</title>
+  <title>Temperature Visualization</title>
   <style>
     body {
-      margin: 0;
+      margin: 0px;
     }
     .domain {
       display: none;
@@ -31,9 +31,10 @@
 <svg width="960" height="600"></svg>
 <script>
   const xValue = d => d.Time;
-  const xLabel = 'Year';
-  const yValue = d => d.MeanCumulativeMassBalance;
-  const yLabel = 'Mean Cumulative Mass Balance (m of water)';
+  const xLabel = 'Time (Per month)';
+  const yValue = d => d.SteamPopularity;
+  const yValue2 = d => d.CovidPopularity;
+  const yLabel = 'Search Term Popularity';
   const margin = { left: 120, right: 30, top: 20, bottom: 120 };
 
   const svg = d3.select('svg');
@@ -67,22 +68,25 @@
 
   const xAxis = d3.axisBottom()
           .scale(xScale)
-          .ticks(63)
+          .tickPadding(15)
+          .ticks(4)
           .tickSize(-innerHeight);
 
   const yAxis = d3.axisLeft()
           .scale(yScale)
-          .ticks(30)
+          .ticks(5)
+          .tickPadding(15)
           .tickSize(-innerWidth);
 
   const row = d => {
     d.Time = new Date(d.Time);
-    d.MeanCumulativeMassBalance = +d.MeanCumulativeMassBalance;
+    d.SteamPopularity = +d.SteamPopularity;
+    d.CovidPopularity = +d.CovidPopularity;
     return d;
   };
-  d3.csv('g1.csv', row, data => {
+  d3.csv('https://raw.githubusercontent.com/zuke0000/Data-Visualization/main/monthlyData.csv', row, data => {
 
-    var allGroup = ["Year", "MeanCumulativeMassBalance"]
+    var allGroup = ["SteamPopularity", "CovidPopularity"]
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
       return {
         name: grpName,
@@ -93,11 +97,12 @@
     });
     xScale
             .domain(d3.extent(data, xValue))
-            .range([1956, 2019])
+            .range([0, innerWidth])
             .nice();
 
     yScale
-            .domain([0,-30.00])
+            .domain([0,100])
+            .range([innerHeight, 0])
             .nice();
 
     // Draw steam data
@@ -105,7 +110,7 @@
             .enter()
             .append('circle')
             .attr('cx', d => xScale(d.Time))
-            .attr('cy', d => yScale(d.MeanCumulativeMassBalance))
+            .attr('cy', d => yScale(d.SteamPopularity))
             .attr('fill-opacity', 0.8)
             .attr('r', 4)
             .style("fill", "#69b3a2");
@@ -118,7 +123,26 @@
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                     .x((d => xScale(d.Time)))
-                    .y(d => yScale(d.MeanCumulativeMassBalance))
+                    .y(d => yScale(d.SteamPopularity))
+            )
+    // Draw covid data
+    g.selectAll('myPoints').data(data)
+            .enter()
+            .append('circle')
+            .attr('cx', d => xScale(d.Time))
+            .attr('cy', d => yScale(d.CovidPopularity))
+            .attr('fill-opacity', 0.8)
+            .attr('r', 4)
+            .style("fill", "#DF2F2F");
+    // Draw covid data lines
+    g.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "#DF2F2F")
+            .attr("stroke-width", 1.5)
+            .attr("d", d3.line()
+                    .x((d => xScale(d.Time)))
+                    .y(d => yScale(d.CovidPopularity))
             )
 
 
