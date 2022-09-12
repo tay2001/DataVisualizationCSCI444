@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <title>Reference Glacier Visualization</title>
+  <style>
+    body {
+      margin: 0px;
+    }
+    .domain {
+      display: none;
+    }
+    .tick line {
+      stroke: #C0C0BB;
+    }
+    .tick text {
+      fill: #8E8883;
+      font-size: 10pt;
+      font-family: sans-serif;
+    }
+    .axis-label {
+      fill: #635F5D;
+      font-size: 30pt;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+<svg width="960" height="600"></svg>
+<script>
+  const xValue = d => d.Time;
+  const xLabel = 'Year';
+  const yValue = d => d.MeanCumulativeMassBalance;
+  const yLabel = 'Mean Cumulative Mass Balance (m of water)';
+  const margin = { left: 120, right: 30, top: 20, bottom: 120 };
+
+  const svg = d3.select('svg');
+  const width = svg.attr('width');
+  const height = svg.attr('height');
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom + 20;
+
+  const g = svg.append('g')
+          .attr('transform', `translate(${margin.left},${margin.top})`);
+  const xAxisG = g.append('g')
+          .attr('transform', `translate(0, ${innerHeight})`);
+  const yAxisG = g.append('g');
+
+  xAxisG.append('text')
+          .attr('class', 'axis-label')
+          .attr('x', innerWidth / 2)
+          .attr('y', 100)
+          .text(xLabel);
+
+  yAxisG.append('text')
+          .attr('class', 'axis-label')
+          .attr('x', -innerHeight / 2)
+          .attr('y', -60)
+          .attr('transform', `rotate(-90)`)
+          .style('text-anchor', 'middle')
+          .text(yLabel);
+
+  const xScale = d3.scaleTime();
+  const yScale = d3.scaleLinear();
+
+  const xAxis = d3.axisBottom()
+          .scale(xScale)
+          .tickPadding(15)
+          .ticks(4)
+          .tickSize(-innerHeight);
+
+  const yAxis = d3.axisLeft()
+          .scale(yScale)
+          .ticks(5)
+          .tickPadding(15)
+          .tickSize(-innerWidth);
+
+  const row = d => {
+    d.Time = new Date(d.Time);
+    d.MeanCumulativeMassBalance = +d.MeanCumulativeMassBalance;
+    return d;
+  };
+  d3.csv('g1.csv', row, data => {
+
+    var allGroup = ["Year", "MeanCumulativeMassBalance"]
+    var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {time: d.time, value: +d[grp]};
+        })
+      };
+    });
+    xScale
+            .domain(d3.extent(data, xValue))
+            .range([0, innerWidth])
+            .nice();
+
+    yScale
+            .domain([0,100])
+            .range([innerHeight, 0])
+            .nice();
+
+    // Draw steam data
+    g.selectAll('circle').data(data)
+            .enter()
+            .append('circle')
+            .attr('cx', d => xScale(d.Time))
+            .attr('cy', d => yScale(d.MeanCumulativeMassBalance))
+            .attr('fill-opacity', 0.8)
+            .attr('r', 4)
+            .style("fill", "#69b3a2");
+
+    // Draw steam data ines
+    g.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "#69b3a2")
+            .attr("stroke-width", 1.5)
+            .attr("d", d3.line()
+                    .x((d => xScale(d.Time)))
+                    .y(d => yScale(d.MeanCumulativeMassBalance))
+            )
+
+
+    xAxisG.call(xAxis);
+    yAxisG.call(yAxis);
+  });
+</script>
+</body>
+</html>
