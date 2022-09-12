@@ -30,7 +30,7 @@ Scatter assignment
 
         // add x axis
         const x = d3.scaleTime()
-            .domain([1956,2019])
+            .domain([d3.timeYear(1956),d3.timeYear(2019)])
             .range([0, width]);
 
         svg.append("g")
@@ -39,7 +39,7 @@ Scatter assignment
         // Add X axis label:
         svg.append("text")
             .attr("text-anchor", "end")
-            .attr("x", width/2 + margin.left)
+            .attr("x", width + margin.left)
             .attr("y", height + margin.top + 20)
             .text("Year");
 
@@ -54,7 +54,7 @@ Scatter assignment
             .attr("text-anchor", "end")
             .attr("transform", "rotate(-90)")
             .attr("y", -margin.left + 20)
-            .attr("x", -margin.top - height/2 + 20)
+            .attr("x", -margin.top - height + 20)
             .text("Mean Cumulative Mass Balance (M of Water)")
 
         // add dots at data points
@@ -67,6 +67,18 @@ Scatter assignment
             .attr("r", 2.0)
             .style("fill", "#69b3a2")
     })
+
+    // Draw steam data ines
+    g.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "#69b3a2")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+            .x((d => xScale(d.Year)))
+            .y(d => yScale(d.MeanCumulativeMassBalance))
+        )
+
 
 </script>
 </body>
