@@ -68,17 +68,6 @@ Scatter assignment
             .style("fill", "#69b3a2")
     })
 
-    // Draw steam data ines
-    g.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "#69b3a2")
-        .attr("stroke-width", 1.5)
-        .attr("d", d3.line()
-            .x((d => xScale(d.Year)))
-            .y(d => yScale(d.MeanCumulativeMassBalance))
-        )
-
 
 </script>
 </body>
