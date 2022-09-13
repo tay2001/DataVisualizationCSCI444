@@ -7,12 +7,12 @@
         h3{
             <!--margin-right: 550px;-->
             text-align: center;
-            font-size: 22px;
+            font-size: 18px;
         }
         h4{
             <!--margin-right: 550px;-->
             text-align: center;
-            font-size: 20px;
+            font-size: 18px;
         }
         body{
             background-color: #D3D3D3;
@@ -39,9 +39,7 @@
 <body>
 <title>UFO Visualization</title>
 <h3>Hypothesis: UFO sightings are seasonal, with more occurring around Halloween. </h3>
-<br>
 <div id="ufo"></div>
-
 <div id="my_dataviz"></div>
 
 <script src="https://d3js.org/d3.v6.js"></script>
@@ -49,10 +47,12 @@
 
 <script>
 
+
+
     // set the dimensions and margins of the graph
     const margin = {top:30, right:0, bottom:70, left:80},
-        width = 660 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = 560 - margin.left - margin.right,
+        height = 325 - margin.top - margin.bottom;
 
     // append the SVG object to the body of the page
     const svg = d3.select("#ufo")
@@ -63,7 +63,7 @@
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
     svg.append("rect")
         .attr("width", "100%")
-        .attr("height", "80%")
+        .attr("height", "69%")
         .attr("fill", "white");
 
 
@@ -90,26 +90,26 @@
         svg.append("text")
             .attr("text-anchor", "end")
             .attr("font-weight","bolder")
-            .attr("font-size","20px")
+            .attr("font-size","18px")
             .attr("x", width/2 + margin.left -50)
             .attr("y", height + margin.top+15)
             .text("Year");
 
         // add Y axis
         const y = d3.scaleLinear()
-            .domain([1000,7500])
+            .domain([1000,8000])
             .range([height, 0]);
         svg.append("g")
             .style("font","14px Ariel")
-            .call(d3.axisLeft(y).ticks(15));
+            .call(d3.axisLeft(y).ticks(5));
         // Y axis label:
         svg.append("text")
             .attr("text-anchor", "end")
             .attr("transform", "rotate(-90)")
             .attr("y", -margin.left + 20)
             .attr("font-weight","bolder")
-            .attr("font-size","20px")
-            .attr("x", -margin.top - height/4)
+            .attr("font-size","18px")
+            .attr("x", -margin.top - height/12)
             .text("Number of Sightings")
 
         //title label
@@ -117,7 +117,7 @@
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
             .attr("text-anchor", "middle")
-            .style("font-size", "20px")
+            .style("font-size", "18px")
             .style("font-weight", "bold")
             .text("UFO Sightings in America 2000-2014");
 
@@ -131,7 +131,7 @@
         function make_y_gridlines() {
             return d3.axisLeft(y)
 
-                .ticks(15)
+                .ticks(10)
         }
 
         // add the X gridlines
@@ -151,6 +151,7 @@
                 .tickFormat("")
             )
 
+
         // Add the line
         svg.append("path")
             .datum(data)
@@ -162,6 +163,16 @@
                 .y(function(d) { return y(d.count) })
             )
 
+        //add anno
+        svg.append("text")
+            .attr("x", (width - 280))
+            .attr("y", 0 - (margin.top -375))
+            .style("font-size", "14px")
+            .style("font-weight", "bold")
+            .text("2014 data only goes\n " +
+                "through 5 months");
+
+
         // add dots at data points
         svg.append("g")
             .selectAll("dot")
@@ -170,8 +181,14 @@
             .attr("cx", function (d) {return x(new Date(d.years))})
             .attr("cy", function (d) {return y(d.count)})
             .attr("r", 4.0)
-            .style("fill", "maroon")
+            .style("fill", "#3B719F")
     });
+
+
+
+
+
+
 </script>
 <br><br>
 
@@ -180,8 +197,8 @@
 
     // set the dimensions and margins of the graph
     const margin2 = {top: 40, right: -4, bottom: 55, left: 80},
-        width2 = 660 - margin.left - margin.right,
-        height2 = 500 - margin.top - margin.bottom;
+        width2 = 560 - margin.left - margin.right,
+        height2 = 325 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     const svg2 = d3.select("#my_dataviz")
@@ -191,6 +208,10 @@
         .append("g")
         .attr("transform",
             `translate(${margin2.left},${margin2.top})`);
+    svg2.append("rect")
+        .attr("width", "100%")
+        .attr("height", "70%")
+        .attr("fill", "white");
 
 
 
@@ -231,14 +252,14 @@
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
             .attr("text-anchor", "middle")
-            .style("font-size", "20px")
+            .style("font-size", "18px")
             .style("font-weight", "bolder")
             .text("Monthly UFO Sightings");
         //xaxis label
         svg2.append("text")
             .attr("text-anchor", "end")
             .attr("font-weight","bolder")
-            .attr("font-size","20px")
+            .attr("font-size","18px")
             .attr("x", width/2 + margin.left)
             .attr("y", height + margin.top+15)
             .text("Months Sighted");
@@ -249,7 +270,7 @@
             .attr("transform", "rotate(-90)")
             .attr("y", -margin.left + 20)
             .attr("font-weight","bolder")
-            .attr("font-size","20px")
+            .attr("font-size","18px")
             .attr("x", -margin.top - height/3)
             .text("Frequency");
 
@@ -262,7 +283,7 @@
             .attr("transform", function(d) { return `translate(${x(d.x0)} , ${y(d.length)})`})
             .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
             .attr("height", function(d) { return height2 - y(d.length); })
-            .style("fill", "maroon" )
+            .style("fill", "#3B719F" )
         //function(d){ if(d.x0<=3){return "#5FA052"} else if(d.x0<=6){return "#963939"}else if(d.x0<=9){return"#EB9C5C"}else{return "#3B719F"}}
 
     });
@@ -270,7 +291,6 @@
 </script>
 
 <!-- histogram on same page -->
-<br><br><br>
 
 
 </body>
