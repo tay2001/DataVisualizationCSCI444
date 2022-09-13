@@ -26,7 +26,7 @@ Hypothesis: 'labor force participiation.. etc'
 <a href="scatterhisto.html">Scatter/Histo</a>
 <a href="scathisto.html">Scatter/Histo testo</a>
 <a href="histo.html">histo testo</a>
-<script src="https://d3js.org/d3.v6.js"></script>
+<script src="https://d3js.org/d3.v3.js"></script>
 
 <script>
 
@@ -39,7 +39,7 @@ Hypothesis: 'labor force participiation.. etc'
     var parseDate = d3.time.format("%d-%b-%y").parse;
 
     // Set the ranges
-    var x = d3.time.scale().range([0, width]);
+    var x = d3.time.scaleTime().range([0, width]);
     var y = d3.scale.linear().range([height, 0]);
 
     // Define the axes

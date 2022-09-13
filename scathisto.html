@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <script src="https://d3js.org/d3.v6.min.js"></script>
-  <title>Temperature Visualization</title>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <title>Glacier Visualization</title>
   <style>
     body {
       margin: 0px;
@@ -30,11 +30,10 @@
 <body>
 <svg width="960" height="600"></svg>
 <script>
-  const xValue = d => d.Time;
-  const xLabel = 'Time (Per month)';
-  const yValue = d => d.SteamPopularity;
-  const yValue2 = d => d.CovidPopularity;
-  const yLabel = 'Search Term Popularity';
+  const xValue = d => d.Year;
+  const xLabel = 'Year';
+  const yValue = d => d.MeanCumulativeMassBalance;
+  const yLabel = 'Mean Cumulative Mass Balance (m of water)';
   const margin = { left: 120, right: 30, top: 20, bottom: 120 };
 
   const svg = d3.select('svg');
@@ -50,7 +49,7 @@
   const yAxisG = g.append('g');
 
   xAxisG.append('text')
-          .attr('class', 'axis-label')
+          .attr('class', '.axis-label')
           .attr('x', innerWidth / 2)
           .attr('y', 100)
           .text(xLabel);
@@ -68,25 +67,21 @@
 
   const xAxis = d3.axisBottom()
           .scale(xScale)
-          .tickPadding(15)
-          .ticks(4)
           .tickSize(-innerHeight);
 
   const yAxis = d3.axisLeft()
           .scale(yScale)
-          .ticks(5)
-          .tickPadding(15)
           .tickSize(-innerWidth);
 
   const row = d => {
-    d.Time = new Date(d.Time);
-    d.SteamPopularity = +d.SteamPopularity;
-    d.CovidPopularity = +d.CovidPopularity;
+    d.Year = new Date(d.Year);
+    d.MeanCumulativeMassBalance = +d.MeanCumulativeMassBalance;
+
     return d;
   };
   d3.csv('https://raw.githubusercontent.com/zuke0000/Data-Visualization/main/monthlyData.csv', row, data => {
 
-    var allGroup = ["SteamPopularity", "CovidPopularity"]
+    var allGroup = ["MeanCumulativeMassBalance"]
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
       return {
         name: grpName,
@@ -109,8 +104,8 @@
     g.selectAll('circle').data(data)
             .enter()
             .append('circle')
-            .attr('cx', d => xScale(d.Time))
-            .attr('cy', d => yScale(d.SteamPopularity))
+            .attr('cx', d => xScale(d.Year))
+            .attr('cy', d => yScale(d.MeanCumulativeMassBalance))
             .attr('fill-opacity', 0.8)
             .attr('r', 4)
             .style("fill", "#69b3a2");
@@ -122,28 +117,10 @@
             .attr("stroke", "#69b3a2")
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
-                    .x((d => xScale(d.Time)))
-                    .y(d => yScale(d.SteamPopularity))
+                    .x((d => xScale(d.Year)))
+                    .y(d => yScale(d.MeanCumulativeMassBalance))
             )
-    // Draw covid data
-    g.selectAll('myPoints').data(data)
-            .enter()
-            .append('circle')
-            .attr('cx', d => xScale(d.Time))
-            .attr('cy', d => yScale(d.CovidPopularity))
-            .attr('fill-opacity', 0.8)
-            .attr('r', 4)
-            .style("fill", "#DF2F2F");
-    // Draw covid data lines
-    g.append("path")
-            .datum(data)
-            .attr("fill", "none")
-            .attr("stroke", "#DF2F2F")
-            .attr("stroke-width", 1.5)
-            .attr("d", d3.line()
-                    .x((d => xScale(d.Time)))
-                    .y(d => yScale(d.CovidPopularity))
-            )
+
 
 
     xAxisG.call(xAxis);

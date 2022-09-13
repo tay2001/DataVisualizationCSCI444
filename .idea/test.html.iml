@@ -12,5 +12,6 @@
     <orderEntry type="library" name="d3" level="application" />
     <orderEntry type="library" name="d3.v6" level="application" />
     <orderEntry type="library" name="d3.v4" level="application" />
+    <orderEntry type="library" name="plotly-latest" level="application" />
   </component>
 </module>
