@@ -39,6 +39,7 @@
 <body>
 <title>UFO Visualization</title>
 <h3>Hypothesis: UFO sightings are seasonal, with more occurring around Halloween. </h3>
+
 <div id="ufo"></div>
 <div id="my_dataviz"></div>
 
@@ -51,8 +52,8 @@
 
     // set the dimensions and margins of the graph
     const margin = {top:30, right:0, bottom:70, left:80},
-        width = 560 - margin.left - margin.right,
-        height = 325 - margin.top - margin.bottom;
+        width = 660 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
     // append the SVG object to the body of the page
     const svg = d3.select("#ufo")
@@ -63,7 +64,7 @@
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
     svg.append("rect")
         .attr("width", "100%")
-        .attr("height", "69%")
+        .attr("height", "80%")
         .attr("fill", "white");
 
 
@@ -101,7 +102,7 @@
             .range([height, 0]);
         svg.append("g")
             .style("font","14px Ariel")
-            .call(d3.axisLeft(y).ticks(5));
+            .call(d3.axisLeft(y).ticks(10));
         // Y axis label:
         svg.append("text")
             .attr("text-anchor", "end")
@@ -109,7 +110,7 @@
             .attr("y", -margin.left + 20)
             .attr("font-weight","bolder")
             .attr("font-size","18px")
-            .attr("x", -margin.top - height/12)
+            .attr("x", -margin.top - height/4)
             .text("Number of Sightings")
 
         //title label
@@ -131,7 +132,7 @@
         function make_y_gridlines() {
             return d3.axisLeft(y)
 
-                .ticks(10)
+                .ticks(15)
         }
 
         // add the X gridlines
@@ -197,8 +198,8 @@
 
     // set the dimensions and margins of the graph
     const margin2 = {top: 40, right: -4, bottom: 55, left: 80},
-        width2 = 560 - margin.left - margin.right,
-        height2 = 325 - margin.top - margin.bottom;
+        width2 = 660 - margin.left - margin.right,
+        height2 = 500 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     const svg2 = d3.select("#my_dataviz")
@@ -289,8 +290,6 @@
     });
 
 </script>
-
-<!-- histogram on same page -->
 
 
 </body>
