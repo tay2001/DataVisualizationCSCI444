@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>UFO Sightings</title>
+    <style>
+        text {
+            font-family: Verdana, Geneva, Tahoma, sans-serif
+        }
+
+        .note {
+            font-size: 2em;
+            text-align: center;
+        }
+
+        path {
+            fill: none;
+            stroke-width: 1px;
+            stroke: #222;
+        }
+
+
+        body{
+            text-align: center;
+            background-color: #D3D3D3;
+        }
+
+
+
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
+</head>
+
+<body>
+<div class="note">Hypothesis: Are there more UFO sightings around Area 51 than the US cities?</div>
+<div class="viz"><svg id="dataviz" width="1000" height="800"></svg></div>
+</body>
+<script>
+
+    function create_svg_border(svg, h, w) {
+        svg.attr('border', 1);
+        svg.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("height", 700)
+            .attr("width", 900)
+            .style("stroke", "black")
+            .style("fill", "white")
+            .style("stroke-width", 2);
+    }
+
+
+    createMap = async function () {
+        let svg = d3.select("#dataviz");
+        let width = parseInt(svg.attr("width"));
+        let height = parseInt(svg.attr("height"));
+
+        create_svg_border(svg, height, width);
+
+        svg.append("g").attr("id", "mapLayer");
+        svg.append("g").attr("id", "pointLayer");
+        d3.select("#mapLayer").append("text").text("United States UFO Sightings").attr("x", 300).attr("y", 20);
+        //projection
+        let projection = d3.geoAlbersUsa()
+            .translate([width / 2, height / 2])
+            .scale([1000]);
+
+        let path = d3.geoPath()
+            .projection(projection);
+
+        //state data
+        let us_json = await d3.json("us-states.json");
+
+        //ufo data
+        let ufo_pts = await d3.json("ugeo1.json");
+
+        // Bind data and create one path per GeoJSON feature
+        var uspaths = d3.select("#mapLayer").selectAll("path")
+            .data(us_json.features)
+            .join("path")
+            .attr("d", path)
+            .style("fill", "none");
+
+        //create points
+        let ufo = d3.select("pointLayer").selectAll("circle")
+            .data(ufo_pts)
+
+        ufo
+            .join("circle")
+            .attr("cx", d => (projection([d.geometry.coordinates])[0]))
+            .attr("cy", d => (projection([d.geometry.coordinates])[1]))
+            .attr("r", 4)
+            .attr("fill", "blue" );
+
+
+    }
+    async function main() {
+        await createMap();
+    }
+
+    main();
+
+</script>
+
+
+</html>
