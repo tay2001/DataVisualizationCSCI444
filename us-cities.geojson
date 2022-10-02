@@ -1,0 +1,605 @@
+{
+   "type": "FeatureCollection",
+   "features": [
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -74.007124,40.71455 ]
+    },
+    "properties": {
+    "rank":1,
+    "place":"New York",
+    "population":8175133
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -118.245323,34.05349 ]
+    },
+    "properties": {
+    "rank":2,
+    "place":"Los Angeles",
+    "population":3792621
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.661575,41.876695 ]
+    },
+    "properties": {
+    "rank":3,
+    "place":"Chicago",
+    "population":2695598
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [  -95.365013,29.739107 ]
+    },
+    "properties": {
+    "rank":4,
+    "place":"Houston",
+    "population":2099451
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [  -75.157800,39.961803 ]
+    },
+    "properties": {
+    "rank":5,
+    "place":"Philadelphia",
+    "population":1526006
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [  -112.073399,33.445473 ]
+    },
+    "properties": {
+    "rank":6,
+    "place":"Phoenix",
+    "population":1445632
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [  -98.496184,29.422864 ]
+    },
+    "properties": {
+    "rank":7,
+    "place":"San Antonio",
+    "population":1327407
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [  -117.154192,32.710157 ]
+    },
+    "properties": {
+    "rank":8,
+    "place":"San Diego",
+    "population":1307402
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [  -96.800611,32.769208 ]
+    },
+    "properties": {
+    "rank":9,
+    "place":"Dallas",
+    "population":1197816
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -112.003047,41.209716 ]
+    },
+    "properties": {
+    "rank":10,
+    "place":"San Jose",
+    "population":945942
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.391794,30.2887 ]
+    },
+    "properties": {
+    "rank":11,
+    "place":"Jacksonville",
+    "population":821784
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -86.149963,39.766911 ]
+    },
+    "properties": {
+    "rank":12,
+    "place":"Indianapolis  (balance)",
+    "population":820445
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.961284,28.973405 ]
+    },
+    "properties": {
+    "rank":13,
+    "place":"Austin",
+    "population":790390
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.187909,28.371795 ]
+    },
+    "properties": {
+    "rank":14,
+    "place":"San Francisco",
+    "population":805235
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -91.374424,41.258735 ]
+    },
+    "properties": {
+    "rank":15,
+    "place":"Columbus",
+    "population":787033
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -89.066334,38.0016 ]
+    },
+    "properties": {
+    "rank":16,
+    "place":"Fort Worth",
+    "population":741206
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.817799,39.09931 ]
+    },
+    "properties": {
+    "rank":17,
+    "place":"Charlotte",
+    "population":731424
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -83.002647,42.408871 ]
+    },
+    "properties": {
+    "rank":18,
+    "place":"Detroit",
+    "population":713777
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -91.599794,41.645415 ]
+    },
+    "properties": {
+    "rank":19,
+    "place":"El Paso",
+    "population":649121
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -90.04892,35.149681 ]
+    },
+    "properties": {
+    "rank":20,
+    "place":"Memphis",
+    "population":646889
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -112.032315,41.202364 ]
+    },
+    "properties": {
+    "rank":21,
+    "place":"Salt Lake City",
+    "population":200133
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -123.873929,45.520615 ]
+    },
+    "properties": {
+    "rank":22,
+    "place":"Seattle",
+    "population":608660
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -102.829919,32.96438 ]
+    },
+    "properties": {
+    "rank":23,
+    "place":"Denver",
+    "population":600158
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.62022,39.284664 ]
+    },
+    "properties": {
+    "rank":24,
+    "place":"Baltimore",
+    "population":620961
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.028999,38.899101 ]
+    },
+    "properties": {
+    "rank":25,
+    "place":"Washington",
+    "population":601723
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.756365,45.304048 ]
+    },
+    "properties": {
+    "rank":26,
+    "place":"Nashville-Davidson metropolitan government (balance)",
+    "population":601222
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.756365,45.304048 ]
+    },
+    "properties": {
+    "rank":27,
+    "place":"Louisville/Jefferson County metro government (balance)",
+    "population":597337
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.906837,43.041809 ]
+    },
+    "properties": {
+    "rank":28,
+    "place":"Milwaukee",
+    "population":594833
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -123.882594,45.52186 ]
+    },
+    "properties": {
+    "rank":29,
+    "place":"Portland",
+    "population":583776
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -96.816104,39.05514 ]
+    },
+    "properties": {
+    "rank":30,
+    "place":"Oklahoma City",
+    "population":579999
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -85.609999,40.4879 ]
+    },
+    "properties": {
+    "rank":31,
+    "place":"Las Vegas",
+    "population":583756
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -106.648643,35.084179 ]
+    },
+    "properties": {
+    "rank":32,
+    "place":"Albuquerque",
+    "population":545852
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -91.601947,41.644727 ]
+    },
+    "properties": {
+    "rank":33,
+    "place":"Tucson",
+    "population":520116
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.321863,38.645741 ]
+    },
+    "properties": {
+    "rank":34,
+    "place":"Fresno",
+    "population":494665
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.594651,38.915291 ]
+    },
+    "properties": {
+    "rank":35,
+    "place":"Sacramento",
+    "population":466488
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -94.827603,29.748022 ]
+    },
+    "properties": {
+    "rank":36,
+    "place":"Long Beach",
+    "population":462257
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -96.864303,39.016682 ]
+    },
+    "properties": {
+    "rank":37,
+    "place":"Kansas City",
+    "population":459787
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -97.700842,30.686452 ]
+    },
+    "properties": {
+    "rank":38,
+    "place":"Mesa",
+    "population":439041
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.047707,36.767408 ]
+    },
+    "properties": {
+    "rank":39,
+    "place":"Virginia Beach",
+    "population":437994
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -122.454979,37.691375 ]
+    },
+    "properties": {
+    "rank":40,
+    "place":"Atlanta",
+    "population":420003
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.547839,40.17676 ]
+    },
+    "properties": {
+    "rank":41,
+    "place":"Colorado Springs",
+    "population":416427
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -73.977405,41.132609 ]
+    },
+    "properties": {
+    "rank":42,
+    "place":"Raleigh",
+    "population":403892
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.94059,41.260689 ]
+    },
+    "properties": {
+    "rank":43,
+    "place":"Omaha",
+    "population":408958
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -91.501889,41.63636 ]
+    },
+    "properties": {
+    "rank":44,
+    "place":"Miami",
+    "population":399457
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.613384,39.095215 ]
+    },
+    "properties": {
+    "rank":45,
+    "place":"Tulsa",
+    "population":391906
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.345139,38.334108 ]
+    },
+    "properties": {
+    "rank":46,
+    "place":"Oakland",
+    "population":390724
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.582569,36.640475 ]
+    },
+    "properties": {
+    "rank":47,
+    "place":"Cleveland",
+    "population":396815
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -93.264931,44.979031 ]
+    },
+    "properties": {
+    "rank":48,
+    "place":"Minneapolis",
+    "population":382578
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -97.335579,37.686981 ]
+    },
+    "properties": {
+    "rank":49,
+    "place":"Wichita",
+    "population":382368
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -88.25278,41.29525 ]
+    },
+    "properties": {
+    "rank":50,
+    "place":"Arlington",
+    "population":365438
+    }
+  }
+]
+}

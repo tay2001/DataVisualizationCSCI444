@@ -5,7 +5,7 @@
     <title>UFO Sightings</title>
     <style>
         text {
-            font-family: Verdana, Geneva, Tahoma, sans-serif
+            font-family: Verdana, sans-serif
         }
 
         .note {
@@ -25,6 +25,21 @@
             background-color: #D3D3D3;
         }
 
+        .tooltip {
+            font-weight: bold;
+            padding: 0.5rem;
+            border: 1px solid silver;
+            color: #222;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px 0px #a6a6a6;
+            opacity: 0.9;
+            position: absolute;
+        }
+
+        .hidden {
+            display: none;
+        }
 
 
     </style>
@@ -34,9 +49,18 @@
 
 <body>
 <div class="note">Hypothesis: Are there more UFO sightings around Area 51 than the US cities?</div>
+<p>Source: <a href="https://www.kaggle.com/datasets/NUFORC/ufo-sightings">UFO Sightings</a></p>
 <div class="viz"><svg id="dataviz" width="1000" height="800"></svg></div>
 </body>
 <script>
+
+    var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .style("font-weight","bolder")
+        .text("Area 51");
 
     function create_svg_border(svg, h, w) {
         svg.attr('border', 1);
@@ -51,7 +75,7 @@
     }
 
 
-    createMap = async function () {
+    map = async function () {
         let svg = d3.select("#dataviz");
         let width = parseInt(svg.attr("width"));
         let height = parseInt(svg.attr("height"));
@@ -60,7 +84,18 @@
 
         svg.append("g").attr("id", "mapLayer");
         svg.append("g").attr("id", "pointLayer");
-        d3.select("#mapLayer").append("text").text("United States UFO Sightings").attr("x", 300).attr("y", 20);
+        d3.select("#mapLayer").append("text").text("United States UFO Sightings").attr("x", 300).attr("y", 50)
+            .style("font-weight","bolder");
+
+        // Handmade legend
+        svg.append("circle").attr("cx",100).attr("cy",50).attr("r", 6).style("fill", "maroon")
+        svg.append("circle").attr("cx",100).attr("cy",80).attr("r", 6).style("fill", "#6699CC")
+        svg.append("text").attr("x", 120).attr("y", 50).text("Area 51").style("font-size", "15px").attr("alignment-baseline","middle")
+        svg.append("text").attr("x", 120).attr("y", 80).text("UFO Sightings").style("font-size", "15px").attr("alignment-baseline","middle")
+        svg.append("text").attr("x", 90).attr("y", 110).text("Moused Over City:").style("font-size", "15px").attr("alignment-baseline","middle")
+
+
+
         //projection
         let projection = d3.geoAlbersUsa()
             .translate([width / 2, height / 2])
@@ -69,34 +104,90 @@
         let path = d3.geoPath()
             .projection(projection);
 
+        const mouseover = (event, d) => {
+            tooltip.style("visibility", "visible");
+            tooltip.style("visibility", "hidden");
+        };
+
         //state data
         let us_json = await d3.json("us-states.json");
 
         //ufo data
-        let ufo_pts = await d3.json("ugeo1.json");
+        let ufo_pts = await d3.json("ufogeo2.geojson");
+
+        //a51 data
+        let a51pt = await d3.json("51point.geojson");
+
+        //cities
+        let citypt = await d3.csv("us-cities.csv");
 
         // Bind data and create one path per GeoJSON feature
-        var uspaths = d3.select("#mapLayer").selectAll("path")
+        var us_paths = d3.select("#mapLayer").selectAll("path")
             .data(us_json.features)
             .join("path")
             .attr("d", path)
             .style("fill", "none");
 
         //create points
-        let ufo = d3.select("pointLayer").selectAll("circle")
-            .data(ufo_pts)
+        let ufo = d3.select("#pointLayer").selectAll("circle")
+            .data(ufo_pts.features)
+        let a51 = d3.select("#pointLayer").selectAll("circle")
+            .data(a51pt.features)
+        let cities = d3.select("#pointLayer").selectAll("circle")
+            .data(citypt)
 
+
+
+        //not sure why not showing
+        //console.log(a51pt)
+        a51
+            .join("circle")
+            .attr("cx", d => (projection(d.geometry.coordinates)[0]))
+            .attr("cy", d => (projection(d.geometry.coordinates)[1]))
+            .attr("r", "6")
+            .attr("fill", "maroon");
         ufo
             .join("circle")
-            .attr("cx", d => (projection([d.geometry.coordinates])[0]))
-            .attr("cy", d => (projection([d.geometry.coordinates])[1]))
-            .attr("r", 4)
-            .attr("fill", "blue" );
+            .attr("cx", d => (projection(d.geometry.coordinates)[0]))
+            .attr("cy", d => (projection(d.geometry.coordinates)[1]))
+            .attr("r", "1")
+            .attr("fill", "#6699CC" );
+
+        /*cities
+            .join("circle")
+            .attr("cx", d => (projection(d.geometry.coordinates)[0]))
+            .attr("cy", d => (projection(d.geometry.coordinates)[1]))
+           .attr("cx", d => (projection([d.lon, d.lat])[0]))
+            .attr("cy", d => (projection([d.lon, d.lat])[1]))
+            .attr("r","4")
+            .attr("fill", "black");*/
+
+        cities
+            .join("circle")
+            .attr("cx", d => (projection([d.lon, d.lat])[0]))
+            .attr("cy", d => (projection([d.lon, d.lat])[1]))
+            .attr("r", "4")
+            .attr("fill", "black")
+            .attr("opacity", ".8")
+            .on("mouseover", event => {
+                tooltip.style("visibility", "visible");
+            })
+            .on("mousemove", (event, d) => {
+                tooltip
+                    .style("top", (195) + "px")
+                    .style("left", (425) + "px")
+                    .text(d.place);
+            })
+            .on("mouseleave", mouseleave);
+
+
+
+
 
 
     }
     async function main() {
-        await createMap();
+        await map();
     }
 
     main();
