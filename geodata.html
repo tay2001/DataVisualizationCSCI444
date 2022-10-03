@@ -52,7 +52,7 @@
 <body>
 <div class="note">Hypothesis: There are more UFO sightings around Area 51 than other US areas.</div>
 <p>Source: <a href="https://www.kaggle.com/datasets/NUFORC/ufo-sightings">UFO Sightings</a></p>
-<div class="viz"><svg id="dataviz" width="1000" height="800"></svg></div>
+<div class="viz"><svg id="dataviz" width="1000" height="700"></svg></div>
 <div id="my_dataviz"></div>
 </body>
 <script>
@@ -67,14 +67,7 @@
 
     function create_svg_border(svg, h, w) {
         svg.attr('border', 1);
-        svg.append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("height", 700)
-            .attr("width", 900)
-            .style("stroke", "black")
-            .style("fill", "white")
-            .style("stroke-width", 2);
+
     }
 
 
@@ -196,13 +189,11 @@
     main();
 
 </script>
-<br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br>
 <script>
     // set the dimensions and margins of the graph
     var margin = {top: 20, right: 20, bottom: 30, left: 100},
         width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        height = 400 - margin.top - margin.bottom;
 
     // set the ranges
     var x = d3.scaleBand()
@@ -272,7 +263,7 @@
             .attr("font-weight","bolder")
             .attr("font-size","18px")
             .attr("x", -margin.top - height/3 )
-            .text("Sitings");
+            .text("Sightings");
 
         // add the y Axis
         svg2.append("g")
