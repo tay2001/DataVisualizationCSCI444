@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<head>
+    <style>
+        h3{
+            <!--margin-right: 550px;-->
+            text-align: center;
+            font-size: 18px;
+        }
+        h4{
+            <!--margin-right: 550px;-->
+            text-align: center;
+            font-size: 18px;
+        }
+        body{
+            background-color: #D3D3D3;
+            text-align:center;
+            font-family: Ariel;
+
+        }
+        p{
+            text-size: 14px;
+        }
+        .grid line {
+            stroke: lightgrey;
+            stroke-opacity: 0.7;
+            shape-rendering: crispEdges;
+        }
+        .grid path {
+            stroke-width: 0;
+        }
+        .axis text{
+            font-weight: bolder;
+            font-size: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+<title>UFO Visualization</title>
+<h3>Hypothesis: UFO sightings are seasonal, with more occurring around Halloween. </h3>
+<p>Data obtained from: https://www.kaggle.com/datasets/NUFORC/ufo-sightings</p>
+<div id="ufo"></div>
+<div id="my_dataviz"></div>
+
+<script src="https://d3js.org/d3.v6.js"></script>
+
+
+<script>
+
+
+
+    // set the dimensions and margins of the graph
+    const margin = {top:30, right:0, bottom:70, left:80},
+        width = 660 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    // append the SVG object to the body of the page
+    const svg = d3.select("#ufo")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    svg.append("rect")
+        .attr("width", "100%")
+        .attr("height", "80%")
+        .attr("fill", "white");
+
+
+        
+    d3.csv("ufocount.csv").then(function(data) {
+
+        //const x_extent = d3.extent(data, function(d) { return d.GrLivArea; } );
+        //const y_extent = d3.extent(data, function(d) { return d.SalePrice; } );
+
+        //const xScale = d3.scaleTime();
+        // add x axis
+        const x = d3.scaleTime()
+            .domain([
+                (new Date('2000')),
+                new Date(('2015'))
+            ])
+            .range([0,width]);
+
+        svg.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .style("font","14px Ariel")
+            .call(d3.axisBottom(x).ticks(15));
+        // Add X axis label:
+        svg.append("text")
+            .attr("text-anchor", "end")
+            .attr("font-weight","bolder")
+            .attr("font-size","18px")
+            .attr("x", width/2 + margin.left -50)
+            .attr("y", height + margin.top+15)
+            .text("Year");
+
+        // add Y axis
+        const y = d3.scaleLinear()
+            .domain([1000,8000])
+            .range([height, 0]);
+        svg.append("g")
+            .style("font","14px Ariel")
+            .call(d3.axisLeft(y).ticks(5));
+        // Y axis label:
+        svg.append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -margin.left + 20)
+            .attr("font-weight","bolder")
+            .attr("font-size","18px")
+            .attr("x", -margin.top - height/4)
+            .text("Number of Sightings")
+
+        //title label
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", 0 - (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "18px")
+            .style("font-weight", "bold")
+            .text("UFO Sightings in America 2000-2014");
+
+        // gridlines in x axis function
+        function make_x_gridlines() {
+            return d3.axisBottom(x)
+                .ticks(15)
+        }
+
+// gridlines in y axis function
+        function make_y_gridlines() {
+            return d3.axisLeft(y)
+
+                .ticks(10)
+        }
+
+        // add the X gridlines
+        svg.append("g")
+            .attr("class", "grid")
+            .attr("transform", "translate(0," + height + ")")
+            .call(make_x_gridlines()
+                .tickSize(-height)
+                .tickFormat("")
+            )
+
+        // add the Y gridlines
+        svg.append("g")
+            .attr("class", "grid")
+            .call(make_y_gridlines()
+                .tickSize(-width)
+                .tickFormat("")
+            )
+
+
+        // Add the line
+        svg.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "black")
+            .attr("stroke-width", 1.5)
+            .attr("d", d3.line()
+                .x(function(d) { return x(new Date(d.years)) })
+                .y(function(d) { return y(d.count) })
+            )
+
+        //add anno
+        svg.append("text")
+            .attr("x", (width - 280))
+            .attr("y", 0 - (margin.top -375))
+            .style("font-size", "14px")
+            .style("font-weight", "bold")
+            .text("2014 data only goes\n " +
+                "through 5 months");
+
+
+        // add dots at data points
+        svg.append("g")
+            .selectAll("dot")
+            .data(data)
+            .join("circle")
+            .attr("cx", function (d) {return x(new Date(d.years))})
+            .attr("cy", function (d) {return y(d.count)})
+            .attr("r", 4.0)
+            .style("fill", "#3B719F")
+    });
+
+
+
+
+
+
+</script>
+<br><br>
+
+<script>
+
+
+    // set the dimensions and margins of the graph
+    const margin2 = {top: 40, right: -4, bottom: 55, left: 80},
+        width2 = 660 - margin.left - margin.right,
+        height2 = 500 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    const svg2 = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width2 + margin2.left + margin2.right)
+        .attr("height", height2 + margin2.top + margin2.bottom)
+        .append("g")
+        .attr("transform",
+            `translate(${margin2.left},${margin2.top})`);
+    svg2.append("rect")
+        .attr("width", "100%")
+        .attr("height", "70%")
+        .attr("fill", "white");
+
+
+
+    // get the data
+    d3.csv("ucc.csv").then( function(data) {
+
+        // X axis: scale and draw:
+        const x = d3.scaleLinear()
+            .domain([1, 13])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+            .range([0, width2]);
+        svg2.append("g")
+            .attr("transform", `translate(0, ${height2})`)
+            .style("font","14px Ariel")
+            .call(d3.axisBottom(x));
+
+        // set the parameters for the histogram
+        const histogram = d3.histogram()
+            .value(function(d) { return d.count; })   // I need to give the vector of value
+            .domain(x.domain())  // then the domain of the graphic
+
+            .thresholds(x.ticks()); // then the numbers of bins
+
+        // And apply this function to data to get the bins
+        const bins = histogram(data);
+
+        // Y axis: scale and draw:
+        const y = d3.scaleLinear()
+            .range([height, 0]);
+
+        y.domain([0, d3.max(bins, function(d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
+
+        svg2.append("g")
+            .style("font","14px Ariel")
+            .call(d3.axisLeft(y));
+
+        //title label
+        svg2.append("text")
+            .attr("x", (width / 2))
+            .attr("y", 0 - (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "18px")
+            .style("font-weight", "bolder")
+            .text("Monthly UFO Sightings");
+        //xaxis label
+        svg2.append("text")
+            .attr("text-anchor", "end")
+            .attr("font-weight","bolder")
+            .attr("font-size","18px")
+            .attr("x", width/2 + margin.left)
+            .attr("y", height + margin.top+15)
+            .text("Months Sighted");
+        //yaxis label
+        // Y axis label:
+        svg2.append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -margin.left + 20)
+            .attr("font-weight","bolder")
+            .attr("font-size","18px")
+            .attr("x", -margin.top - height/3)
+            .text("Frequency");
+
+
+        // append the bar rectangles to the svg element
+        svg2.selectAll("rect")
+            .data(bins)
+            .join("rect")
+            .attr("x", 1)
+            .attr("transform", function(d) { return `translate(${x(d.x0)} , ${y(d.length)})`})
+            .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
+            .attr("height", function(d) { return height2 - y(d.length); })
+            .style("fill", "#3B719F" )
+        //function(d){ if(d.x0<=3){return "#5FA052"} else if(d.x0<=6){return "#963939"}else if(d.x0<=9){return"#EB9C5C"}else{return "#3B719F"}}
+
+    });
+
+</script>
+
+
+</body>
