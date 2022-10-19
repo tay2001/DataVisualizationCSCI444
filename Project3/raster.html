@@ -20,7 +20,7 @@
         font-size: 18px;
     }
     body{
-        background-color: #D3D3D3;
+        background-color: #e0dede;
         text-align:center;
         font-family: Ariel;
 
@@ -59,11 +59,11 @@
     <br> It always ranges -1(least leaves) to 1(most leaves).</h4>
 <!--Button for 2001 NDVI -->
 <div class="button">
-    <input name="update" type="button" value="August 2001" onclick="updateMap()" />
+    <input name="update" type="button"  onclick="updateMap()" />
 </div>
 <!--Button for 2022 NDVI -->
 <div class="button">
-    <input name="update" type="button" value="August 2022" onclick="renderVis()" />
+    <input name="update" type="button" onclick="renderVis()" />
 </div>
 
 <!--div for the svg - try to fit onto one page -->
@@ -84,6 +84,7 @@
         let tiff = await d3.buffer('VI22.TIFF')
             .then(buffer => GeoTIFF.fromArrayBuffer(buffer));
         let image = await tiff.getImage();
+        //read the rasters
         let rasters = await image.readRasters();
         let values = rasters[0];
         let w = image.getWidth(), h = image.getHeight();
@@ -118,6 +119,7 @@
             .attr('fill', d => colorScale(d.value))
             .attr('stroke', 'black')
             .attr('stroke-width', 0.1)
+            //make leaves just a bit more opaque
             .style('opacity', .8)
             .attr('d', d => path(d))
             .attr('transform', `scale(${scaling})`);
