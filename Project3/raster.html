@@ -1,0 +1,218 @@
+<html>
+
+<script src="https://d3js.org/d3.v7.js"></script>
+<script src="https://unpkg.com/d3-contour@1"></script>
+<script src='https://cdn.jsdelivr.net/npm/geotiff'></script>
+<!--Topojson for possible projection of map, but couldn't quite.. get to work. Scrapped. -->
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js'></script>
+<script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
+
+
+<body>
+
+<style>
+    body {
+        background-color: #D3D3D3;
+        text-align:center;
+        font-family: Ariel;
+
+    }
+
+    /* stylization for the div button below - utilised W3, but was struggling
+    with the actual button attribute*/
+    .button {
+        padding: 8px 14px;
+        margin-bottom: 0;
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 500;
+        /* want the rounded corners - ty w3 lol*/
+        border-radius: 12px;
+        color: white;
+        /*
+       no background color because it would go out of the bounds of the button
+         */
+        line-height: 1;
+        text-align: center;
+
+    }
+
+</style>
+
+<!--Title and Hypothesis -->
+<title>Raster Map</title>
+<h2>Hypothesis: The world had more green leaf vegetation in August 2001 compared to August 2022.</h2>
+<h4>Normalized Difference Vegetation Index (NDVI) quantifies vegetation by measuring the difference<br> between near-infrared (which vegetation strongly reflects) and red light (which vegetation absorbs).<br> It always ranges -1 to 1.</h4>
+<!--Button for 2001 NDVI -->
+<div class="button" id="2001" >
+    <input name="update" type="button" value="August 2001" onclick="updateMap()" />
+</div>
+<!--Button for 2022 NDVI -->
+<div class="button" id="2022">
+    <input name="update" type="button" value="August 2022" onclick="renderVis()" />
+</div>
+
+<!--div for the svg - try to fit onto one page -->
+<div width="900" height="600">
+    <g id = "datavis" ></g>
+
+</div>
+
+
+<!--Start of the script - two svgs for the two different visualizations -->
+<script>
+    ///Normalized Difference Vegetation Index (NDVI)
+    // quantifies vegetation by measuring the difference between near-infrared
+    // (which vegetation strongly reflects) and red light (which vegetation absorbs)
+
+    async function renderVis() {
+        document.getElementById("datavis").innerHTML = "";
+        let tiff = await d3.buffer('VI22.TIFF')
+            .then(buffer => GeoTIFF.fromArrayBuffer(buffer));
+        let image = await tiff.getImage();
+        let rasters = await image.readRasters();
+        let values = rasters[0];
+        let w = image.getWidth(), h = image.getHeight();
+
+        //scaling - a bit smaller than the tutorial so it fits a page
+        let scaling = Math.min(window.innerWidth * .7 / w, window.innerHeight * .7 / h);
+        let width = w * scaling, height = h * scaling;
+
+        //set the svg
+        let svg = d3.select('#datavis').append('svg').attr('width', width).attr('height', height + 120);
+        //would add border but wasn't showing good
+        // svg.append("rect")
+        //     .attr("width", "100%")
+        //     .attr("height", "100%")
+        //     .attr("stroke-width",2)
+        //     .attr("stroke", "black");
+        //set the contours
+        let contours = d3.contours().size([w, h]);
+        let contourData = contours(values);
+
+        //let colorScale = d3.scaleSequential(d3.extent(values), d3.interpolateGreens);
+        //only colorscale that is giving me the ability to differentiate from the ocean
+        let colorScale = d3.scaleSequential(d3.extent(values), d3.interpolateCubehelixDefault);
+
+        //let colorScale = d3.scaleSequential()
+        //.interpolator(d3.interpolateRgb("white","green"));
+
+        let path = d3.geoPath();
+        let leaves = svg.selectAll('.leaves').data(contourData);
+        leaves.enter().append('path')
+            .attr('class', 'leaves')
+            .attr('fill', d => colorScale(d.value))
+            .attr('stroke', 'black')
+            .attr('stroke-width', 0.1)
+            .style('opacity', .8)
+            .attr('d', d => path(d))
+            .attr('transform', `scale(${scaling})`);
+
+        let legend = d3.legendColor()
+            .scale(colorScale)
+            .orient('horizontal')
+            .shapeWidth(50)
+            .title('Normalized Difference Vegetation Index (NDVI)')
+            //amount of ticks
+            //referenced this
+            .cells(11)
+            //add more labels -- consulted Jesse
+            .labels(["-1","","","","","0","","","","","1"]);
+        svg.append("text")
+            .text("August 2022")
+            .attr("class", "label")
+            .attr("font-weight","bolder")
+            .attr("font-size","24px")
+            .attr("x", 425)
+            .attr("y", 450);
+        svg.append('g')
+            .attr('transform', `translate(10,${height + 50})`)
+            .call(legend);
+
+
+    }
+
+    //second vis. accessed by the button.
+    async function updateMap() {
+        document.getElementById("datavis").innerHTML = "";
+        let tiff = await d3.buffer('vi01.TIFF')
+            .then(buffer => GeoTIFF.fromArrayBuffer(buffer));
+        let image = await tiff.getImage();
+        let rasters = await image.readRasters();
+        let values = rasters[0];
+
+
+        let w = image.getWidth(), h = image.getHeight();
+
+        let scaling = Math.min(window.innerWidth * .7 / w, window.innerHeight * .7 / h);
+        let width = w * scaling, height = h * scaling;
+
+        //select the svg
+        let svg = d3.select('#datavis').append('svg').attr('width', width).attr('height', height + 120);
+
+        //get the contours
+        let contours = d3.contours().size([w, h]);
+        let contourData = contours(values);
+
+        //tried messing with the color scale to make it work, but still didn't
+        //ran out of time for a solution
+
+        //let colorScale = d3.scaleSequential(d3.extent(values), d3.interpolateGreens);
+        let colorScale = d3.scaleSequential(d3.extent(values), d3.interpolateCubehelixDefault);
+        //let colorScale = d3.scaleSequential()
+        //.interpolator(d3.interpolateRgb("white","green"));
+
+        let path = d3.geoPath();
+        let leaves = svg.selectAll('.leaves').data(contourData);
+        leaves.enter().append('path')
+            .attr('class', 'leaves')
+            .attr('fill', d => colorScale(d.value))
+            //.attr('fill',d.value => '---' ? colorScale(d.value) : "white")
+            // .attr('fill',function(d) {
+            //     return d.value == '' ? "#EEE" : colorScale(d.value);
+            // })
+            //.attr('fill', d => d.value >= (-1) && d.value <= 1 ? '#D3D3D3' : colorScale(d.value) )
+            .attr('stroke', 'black')
+            .attr('stroke-width', 0.1)
+            .style('opacity', .8)
+            .attr('d', d => path(d))
+            .attr('transform', `scale(${scaling})`);
+
+        let legend = d3.legendColor()
+            .scale(colorScale)
+            .orient('horizontal')
+            .shapeWidth(50)
+            .title('Normalized Difference Vegetation Index (NDVI)')
+            //amount of ticks
+            //referenced this
+            .cells(11)
+            //add more labels -- consulted Jesse
+            .labels(["-1","","","","","0","","","","","1"]);
+        svg.append("text")
+            .text("August 2001")
+            .attr("class", "label")
+            .attr("font-weight","bolder")
+            .attr("font-size","24px")
+            .attr("x", 425)
+            .attr("y", 450);
+        svg.append('g')
+            .attr('transform', `translate(10,${height + 50})`)
+            .call(legend);
+    }
+
+    //show a map
+    updateMap();
+
+
+</script>
+
+
+<!--Sources below -- find the one used for buttons -->
+<p>Sources: <a href="https://neo.gsfc.nasa.gov/view.php?datasetId=MOD_NDVI_M">Normalized Difference Vegetation Index</a><br>
+    <a href="https://yangdanny97.github.io/blog/2020/11/26/D3-elevations">Tutorial Followed for Raster</a>
+    <a href="https://www.w3schools.com/howto/howto_css_text_buttons.asp">Tutorial for Buttons</a></p>
+
+
+</body>
+</html>
