@@ -12,11 +12,22 @@
 <body>
 
 <style>
-    body {
-        background-color: white;
+    h3{
+        text-align: center;
+        font-size: 18px;
+    }
+    h4{
+        text-align: center;
+        font-size: 18px;
+    }
+    body{
+        background-color: #D3D3D3;
         text-align:center;
         font-family: Ariel;
 
+    }
+    p{
+        text-size: 14px;
     }
 
     /* stylization for the div button below - utilised W3, but was struggling
@@ -47,11 +58,11 @@
     <br> between near-infrared (which vegetation strongly reflects) and red light (which vegetation absorbs).
     <br> It always ranges -1(least leaves) to 1(most leaves).</h4>
 <!--Button for 2001 NDVI -->
-<div class="button" id="2001" >
+<div class="button">
     <input name="update" type="button" value="August 2001" onclick="updateMap()" />
 </div>
 <!--Button for 2022 NDVI -->
-<div class="button" id="2022">
+<div class="button">
     <input name="update" type="button" value="August 2022" onclick="renderVis()" />
 </div>
 
