@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <style>
+
+        table.tablestyle {
+            font-family: Arial, Helvetica, sans-serif;
+            border: 1px solid #000000;
+            width: 350px;
+            height: 200px;
+            text-align: center;
+            border-collapse: collapse;
+        }
+        table.tablestyle td, table.tablestyle th {
+            border: 2px solid #000000;
+            padding: 3px 2px;
+        }
+        table.tablestyle tbody td {
+            font-size: 18px;
+            border: 1px solid;
+        }
+
+        table.tablestyle thead {
+            background: #0B6FA4;
+            border-bottom: 5px solid #000000;
+        }
+        table.tablestyle thead th {
+            font-size: 17px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-align: center;
+            border-left: 2px solid #000000;
+        }
+        table.tablestyle thead th:first-child {
+            border-left: none;
+        }
+
+        table.tablestyle tfoot td {
+            font-size: 14px;
+        }
+
+        body{
+            background-color: #D3D3D3;
+            text-align:center;
+            font-family: Ariel;
+        }
+        h3{
+            text-align: center;
+            font-size: 18px;
+        }
+        * {
+            font-family: Ariel;
+        }
+        .vis {
+            display: block;
+            margin: auto;
+            text-align: center;
+        }
+        h4{
+            text-align: center;
+            font-size: 18px;
+        }
+        .links line {
+            stroke: #797979;
+            stroke-opacity: 1.6;
+        }
+
+        svg2 {
+            border: 0px solid gray;
+        }
+        svg{
+            text-align: right;
+        }
+        g.am-axis text {
+            font-size: 8px;
+        }
+
+        .domain {
+            fill: none;
+        }
+
+        table, th, td {
+            border:2px solid black;
+        }
+
+        .tick > line{
+            stroke: black;
+            stroke-width: 1px;
+            stroke-opacity: 0.25;
+        }
+
+    </style>
+    <title>Dolphin Social Network</title>
+</head>
+<body>
+
+<h1 text-align="center">Hypothesis: Dolphins form complex communities with multiple connections to each other.</h1>
+<h3>An undirected social network of frequent associations between 62 dolphins in a community living off Doubtful Sound, New Zealand.</h3>
+<p>Hover over an individual node to see the dolphin's name and connections.<br></p>
+
+<div style="width: 100%;overflow:hidden;">
+    <div style="width:200px; float: left; margin-left:225px;">
+        <table class="tablestyle" style="border: 2px solid black;width: 20%; height: 20%;padding-top: 10px; padding-right: 30px; padding-bottom: 10px; padding-left: 10px;">
+            <tr>
+                <td><b>Highest Amount Connections</b></td>
+                <td> Grin - 14 edges</td>
+            </tr>
+            <tr>
+                <td><b>Average Amount Connections</b></td>
+                <td>4.83 edges</td>
+            </tr>
+            <tr>
+                <td><b>Less than 3 connections</b></td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td><b>3-7 connections</b></td>
+                <td>38</td>
+            </tr>
+            <tr>
+                <td><b>8 or greater connections</b></td>
+                <td>9</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="margin-left: 20px;">
+
+        <div class="vis">
+            <svg width="860" height="640"></svg>
+
+        </div></div>
+
+
+</div>
+
+
+
+
+
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js'></script>
+<script src='layout.js' type='text/JavaScript'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js'></script>
+<!-- Force directed graph --> <p>
+ <a href="http://www-personal.umich.edu/~mejn/netdata/">Dolphin Source</a>
+    <a href="https://observablehq.com/@d3/force-directed-graph">Force-Directed Graph Source</a>.
+
+    <script>
+        //have it so its set to screen
+    var svg = d3.select("svg"),
+            width = +svg.node().getBoundingClientRect().width,
+            height = +svg.node().getBoundingClientRect().height;
+
+
+        // svg objects
+        var link, node;
+        // the data - an object with nodes and links
+        var graph;
+
+        // load the data - dolphins json
+        d3.json("dolphins.json", function(error, _graph) {
+            if (error) throw error;
+
+            //set the graph
+            graph = _graph;
+
+            //run the display functions
+            iDisplay();
+            iSim();
+        });
+
+        // force simulator
+        var simulation = d3.forceSimulation();
+
+        //update locos
+        function iSim() {
+            simulation.nodes(graph.nodes);
+            iForces();
+            simulation.on("tick", ticked);
+        }
+
+        // values for all forces
+        forceProperties = {
+            center: {
+                x: 0.5,
+                y: 0.5
+            },
+            charge: {
+                enabled: true,
+                strength: -30,
+                distanceMin: 1,
+                distanceMax: 2000
+            },
+            collide: {
+                enabled: true,
+                strength: .7,
+                iterations: 1,
+                radius: 5
+            },
+            forceX: {
+                enabled: false,
+                strength: .1,
+                x: .5
+            },
+            forceY: {
+                enabled: false,
+                strength: .1,
+                y: .5
+            },
+            link: {
+                enabled: true,
+                distance: 60,
+                iterations: 1
+            }
+        }
+
+        // apply new force properties
+        function uForces() {
+            // set the forces for the nodes so they collide, operate, etc properly
+            simulation.force("center")
+                .x(width * forceProperties.center.x)
+                .y(height * forceProperties.center.y);
+            simulation.force("charge")
+                .strength(forceProperties.charge.strength * forceProperties.charge.enabled)
+                .distanceMin(forceProperties.charge.distanceMin)
+                .distanceMax(forceProperties.charge.distanceMax);
+            simulation.force("collide")
+                .strength(forceProperties.collide.strength * forceProperties.collide.enabled)
+                .radius(forceProperties.collide.radius)
+                .iterations(forceProperties.collide.iterations);
+            simulation.force("forceX")
+                .strength(forceProperties.forceX.strength * forceProperties.forceX.enabled)
+                .x(width * forceProperties.forceX.x);
+            simulation.force("forceY")
+                .strength(forceProperties.forceY.strength * forceProperties.forceY.enabled)
+                .y(height * forceProperties.forceY.y);
+            simulation.force("link")
+                .id(function(d) {return d.id;})
+                .distance(forceProperties.link.distance)
+                .iterations(forceProperties.link.iterations)
+                .links(forceProperties.link.enabled ? graph.links : []);
+
+        }
+
+
+        //set the forces
+        function iForces() {
+            simulation
+                .force("link", d3.forceLink())
+                .force("charge", d3.forceManyBody())
+                .force("collide", d3.forceCollide())
+                .force("center", d3.forceCenter())
+                .force("forceX", d3.forceX())
+                .force("forceY", d3.forceY());
+            uForces();
+        }
+
+        // generate the svg objects and force simulation
+        function iDisplay() {
+            // set the data and properties of link lines
+            link = svg.append("g")
+                .attr("class", "links")
+                .selectAll("line")
+                .data(graph.links)
+                .enter().append("line");
+
+            // set dolphins
+            node = svg.append("g")
+                .attr("class", "nodes")
+                .selectAll("circle")
+                .data(graph.nodes)
+                .enter().append("circle")
+                .call(d3.drag()
+                    //drag events
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            // hover over the nodes
+            node.append("title")
+                .text(function(d) { return "Name: "+ d.id + "    Connections: " +d.edges; });
+            // visualize the graph
+            uDisplay();
+        }
+
+        // update the display based on the forces (but not positions)
+        function uDisplay() {
+            node
+                .attr("r", forceProperties.collide.radius)
+                .attr("stroke", forceProperties.charge.strength > 0 ? "black" : "black")
+               .style("fill", function(d) {
+                    if (d.edges < 3) {return "#8ca9ff"}
+                    if (d.edges >= 6 ) {return '#001f6e'}
+                    else 	{ return '#294cb4' }
+                    ;})
+                .attr("stroke-width", forceProperties.charge.enabled==false ? 0 : Math.abs(forceProperties.charge.strength)/15);
+
+            link
+                .attr("stroke-width", forceProperties.link.enabled ? 1 : .5)
+                .attr("opacity", forceProperties.link.enabled ? 1 : 0);
+        }
+
+
+
+
+        //click and drag, stuff comes from Melissa Laurino's work
+        //https://github.com/MelissaLaurino/DolphinSocialNetwork_Laurino/blob/master/dolphins.html
+
+        // update the display positions after each simulation tick
+        function ticked() {
+
+            node
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
+            d3.select('#alpha_value').style('flex-basis', (simulation.alpha()*100) + '%');
+
+            link
+                .attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+        }
+
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
+
+        function dragended(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.0001);
+            d.fx = null;
+            d.fy = null;
+        }
+
+
+        //text bubbles
+    svg.append("text")
+        .style("fill","black")
+        .style("font-size","14px")
+        .style("font-weight", "bold")
+        .attr("x", 70)
+        .attr("y", 33)
+        .style("style","label")
+        .text("")
+
+
+
+
+    svg.append('circle')
+        .attr('cx', 540 )
+        .attr('cy', 25 )
+        .attr('r','6px')
+        .style('fill', '#8ca9ff');
+
+        svg.append("text")
+            .style("fill","black")
+            .style("font-size","18px")
+            .attr("x", 550)
+            .attr("y", 28)
+            .style("style","label")
+            .text(" less than 3 connections ")
+
+    svg.append('circle')
+        .attr('cx', 540 )
+        .attr('cy', 50 )
+        .attr('r','6px')
+        .style('fill', '#294cb4');
+
+        svg.append("text")
+            .style("fill","black")
+            .style("font-size","18px")
+            .attr("x", 550)
+            .attr("y", 53)
+            .style("style","label")
+            .text(" 3-7 connections ")
+
+    svg.append('circle')
+        .attr('cx', 540 )
+        .attr('cy', 75 )
+        .attr('r','6px')
+        .style('fill', '#001f6e');
+        svg.append("text")
+            .style("fill","black")
+            .style("font-size","18px")
+            .attr("x", 550)
+            .attr("y", 79)
+            .style("style","label")
+            .text(" 8 or greater connections ")
+
+
+    </script>
+</body>
+
