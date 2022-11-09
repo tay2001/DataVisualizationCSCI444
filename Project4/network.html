@@ -280,7 +280,7 @@
 
             // hover over the nodes
             node.append("title")
-                .text(function(d) { return "Name: "+ d.id + "    Connections: " +d.edges; });
+                .text(function(d) { return "Name: "+ d.label + "    Connections: " +d.edges; });
             // visualize the graph
             uDisplay();
         }
